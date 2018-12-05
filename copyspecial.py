@@ -26,8 +26,9 @@ def collect_paths(dir):
 
 
 def copy_files(path_list, to_dir):
-    if os.path.exists(to_dir):
-        
+    if os.path.isdir(to_dir):
+        for path in path_list:
+            shutil.copy(path, to_dir)
 
 
 def main():
