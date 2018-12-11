@@ -6,11 +6,9 @@
 # Google's Python Class
 # http://code.google.com/edu/languages/google-python-class/
 
-import sys
 import re
 import os
 import shutil
-import commands
 import argparse
 
 """Copy Special exercise
@@ -18,10 +16,14 @@ import argparse
 
 # +++your code here+++
 # Write functions and modify main() to call them
+
+
 def collect_paths(dir):
     file_dir = os.listdir(dir)
-    match_file = [os.path.abspath(file) for file in file_dir if re.search(r'__\w+__', file)]
+    match_file = [os.path.abspath(file) for file in file_dir
+                  if re.search(r'__\w+__', file)]
 
+    print '\n'.join(match_file)
     return match_file
 
 
@@ -31,16 +33,25 @@ def copy_files(path_list, to_dir):
             shutil.copy(path, to_dir)
 
 
+def zip_files(path_list, to_zip):
+    new_cmd = "zip -j " + to_zip
+
+    for path in path_list:
+        new_cmd += " " + path
+
+    print "Command I'm going to do:\n" + new_cmd
+    os.system(new_cmd)
+
+
 def main():
     # This snippet will help you get started with the argparse module.
     parser = argparse.ArgumentParser()
     parser.add_argument('--todir', help='dest dir for special files')
     parser.add_argument('--tozip', help='dest zipfile for special files')
-    parser.add_argument('from_dir', help='positional argument defined by user input')
+    parser.add_argument('from_dir',
+                        help='positional argument defined by user input')
     # TODO need an argument to pick up 'from_dir'
     args = parser.parse_args()
-
-    print args.from_dir
 
     # TODO you must write your own code to get the cmdline args.
     # Read the docs and examples for the argparse module about how to do this.
@@ -50,14 +61,17 @@ def main():
         print 'No bueno'
     elif paths and args.todir:
         copy_files(paths, args.todir)
+    elif paths and args.tozip:
+        zip_files(paths, args.tozip)
 
 
     # Parsing command line arguments is a must-have skill.
-    # This is input data validation.  If something is wrong (or missing) with any
+    # This is input data validation.
+    # If something is wrong (or missing) with any
     # required args, the general rule is to print a usage message and exit(1).
 
     # +++your code here+++
     # Call your functions
-  
+
 if __name__ == "__main__":
     main()
