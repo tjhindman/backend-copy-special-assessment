@@ -28,7 +28,8 @@ def collect_paths(dir):
 
 
 def copy_files(path_list, to_dir):
-    if os.path.isdir(to_dir):
+    if not os.path.isdir(to_dir):
+        os.makedirs(to_dir)
         for path in path_list:
             shutil.copy(path, to_dir)
 
